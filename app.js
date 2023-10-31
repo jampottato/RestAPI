@@ -1,12 +1,10 @@
 const express = require("express");
-
+const { PORT } = require("./config");
 const app = express();
 app.use(express.json());
 
-const PORT = process.envPORT || 3000;
-
 app.listen(PORT, () => {
-  console.log("Server Listening on PORT: ", PORT);
+  console.log("Server Listening on PORT:", PORT);
 });
 
 app.get("/status", (request, response) => {
