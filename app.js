@@ -4,21 +4,25 @@ app.use(express.json());
 
 let customerList = [
   {
+    id: 1,
     name: "Kazu",
     age: 22,
     status: "active",
   },
   {
+    id: 2,
     name: "Kumori",
     age: 22,
     status: "active",
   },
   {
+    id: 3,
     name: "Suguru",
     age: 22,
     status: "Inactive",
   },
   {
+    id: 4,
     name: "Satouru",
     age: 22,
     status: "Inactive",
@@ -49,6 +53,20 @@ app.put("/customer", (req, res) => {
   const newName = req.body.newName;
   for (let i = 0; i < customerList.length; i++) {
     customerList[i].name = newName;
+  }
+  res.json(customerList);
+});
+
+app.delete("/customer/:id", (req, res) => {
+  //Get the customerId
+  //delete user with id
+  // delete id
+
+  const id = req.params.id;
+  for (let i = 0; i < customerList.length; i++) {
+    if (customerList[i].id == id) {
+      customerList.splice(i, 1);
+    }
   }
   res.json(customerList);
 });
