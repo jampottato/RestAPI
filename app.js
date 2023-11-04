@@ -32,7 +32,7 @@ let customerList = [
 //this method get/request a data from the array of customerList
 
 app.get("/customer", (req, res) => {
-  res.json(customerList);
+  res.status(302).json(customerList);
 });
 
 //grab the data sent by client
@@ -42,7 +42,7 @@ app.get("/customer", (req, res) => {
 app.post("/customer", (req, res) => {
   const addCustomer = req.body;
   customerList.push(addCustomer);
-  res.json(customerList);
+  res.status(201).json(customerList);
 });
 
 //grab the new Customer name
@@ -54,7 +54,7 @@ app.put("/customer", (req, res) => {
   for (let i = 0; i < customerList.length; i++) {
     customerList[i].name = newName;
   }
-  res.json(customerList);
+  res.status(200).json(customerList);
 });
 
 app.delete("/customer/:id", (req, res) => {
@@ -63,12 +63,16 @@ app.delete("/customer/:id", (req, res) => {
   // delete id
 
   const id = req.params.id;
+  const foundId = false;
   for (let i = 0; i < customerList.length; i++) {
     if (customerList[i].id == id) {
       customerList.splice(i, 1);
     }
   }
-  res.json(customerList);
+  if (!foundId) {
+    res.status(404).json({ error: "Customer Id not found" });
+  }
+  res.status(200).json(customerList);
 });
 
 //this method is use to run the code into the browser in localhost
