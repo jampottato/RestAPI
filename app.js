@@ -14,8 +14,10 @@ app.get("/customer", (req, res) => {
 });
 
 app.post("/customer", (req, res) => {
+  const { customerId, customerName, customerAge, status } = req.body;
   connection.query(
-    "INSERT INTO customer (`customerId`, `customerName`, `customerAge`, `status`) VALUES ('3', 'clark', '22', '0');",
+    "INSERT INTO customer (`customerId`, `customerName`, `customerAge`, `status`) VALUES (?,?,?,?);",
+    [customerId, customerName, customerAge, status],
     (err, result) => {
       if (err) {
         res.status(201).json(err);
@@ -24,11 +26,21 @@ app.post("/customer", (req, res) => {
       }
     }
   );
-  // res.status(201).json(customerList);
 });
 
 app.put("/customer", (req, res) => {
-  // res.status(200).json(customerList);
+  const { customerId, customerName, customerAge, status } = req.body;
+  connection.query(
+    "INSERT INTO customer (`customerId`, `customerName`, `customerAge`, `status`) VALUES (?,?,?,?);",
+    [customerId, customerName, customerAge, status],
+    (err, result) => {
+      if (err) {
+        res.status(201).json(err);
+      } else {
+        res.status(302).json(result);
+      }
+    }
+  );
 });
 
 app.delete("/customer/:id", (req, res) => {
