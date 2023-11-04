@@ -1,20 +1,29 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql");
-const db = mysql.createConnection({
-  user: "root",
-  host: "127.0.0.1",
-  password: "Kazuki022",
-  database: "ExpressJS",
-});
-
+const { connection } = require("./config");
 app.use(express.json());
 
 app.get("/customer", (req, res) => {
-  // res.status(302).json(customerList);
+  connection.query("SELECT * FROM customer;", (err, result) => {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(302).json(result);
+    }
+  });
 });
 
 app.post("/customer", (req, res) => {
+  connection.query(
+    "INSERT INTO customer (`customerId`, `customerName`, `customerAge`, `status`) VALUES ('3', 'clark', '22', '0');",
+    (err, result) => {
+      if (err) {
+        res.status(201).json(err);
+      } else {
+        res.status(302).json(result);
+      }
+    }
+  );
   // res.status(201).json(customerList);
 });
 
