@@ -31,20 +31,35 @@ app.post("/customer", (req, res) => {
 app.put("/customer", (req, res) => {
   const { customerId, customerName, customerAge, status } = req.body;
   connection.query(
-    "INSERT INTO customer (`customerId`, `customerName`, `customerAge`, `status`) VALUES (?,?,?,?);",
-    [customerId, customerName, customerAge, status],
+    "UPDATE customer SET `customerName` = ?, `customerAge` = ?, `status` = ? WHERE `customerId` = ?",
+    [customerName, customerAge, status, customerId],
     (err, result) => {
       if (err) {
-        res.status(201).json(err);
+        res.status(500).json(err);
       } else {
-        res.status(302).json(result);
+        res.status(200).json(result);
       }
     }
   );
 });
 
 app.delete("/customer/:id", (req, res) => {
-  // res.status(200).json(customerList);
+  const id = req.params.id;
+  const foundId = false; // Initialize foundId as false
+
+  connection.query(
+    "DELETE FROM customer WHERE `customerId` = ?",
+    [id],
+    (err, result) => {
+      if (err) {
+        res.status(500).json(err);
+      } else if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Customer Id not found" });
+      } else {
+        res.status(200).json({ message: "Customer deleted successfully" });
+      }
+    }
+  );
 });
 
 //this method is use to run the code into the browser in localhost
